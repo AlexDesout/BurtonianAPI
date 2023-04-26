@@ -2,6 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FutsController;
+use App\Http\Controllers\BieresController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ContenancesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +18,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+// Liste des Bières
+Route::get('/bieres', [App\Http\Controllers\BieresController::class, 'listeBieres']);
+
+// Suppression Bieres
+Route::delete('/bieres/{nomBiere}', [App\Http\Controllers\BieresController::class, 'supprimerBieres']);
+
+// Ajout Bieres
+Route::post('/bieres', [App\Http\Controllers\BieresController::class, 'ajouterBieres']);
