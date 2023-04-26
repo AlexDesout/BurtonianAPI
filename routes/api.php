@@ -62,5 +62,14 @@ Route::put('/clients', [App\Http\Controllers\ClientsController::class, 'livrerCl
 
                 // Clients :
 
-// Un fut spécifique
+// Liste fûts vides
+Route::get('/futs/vide', [App\Http\Controllers\FutsController::class, 'listeFutsVides']);
+
+// Un fût spécifique
 Route::get('/futs/{idFut}', [App\Http\Controllers\FutsController::class, 'uniqueFut']);
+
+// Ajout fûts
+Route::post('/futs', [App\Http\Controllers\FutsController::class, 'ajouterFuts']);
+
+// Suppression fûts
+Route::delete('/futs/{idFut}', [App\Http\Controllers\FutsController::class, 'supprimerFuts']);

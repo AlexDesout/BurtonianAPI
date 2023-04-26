@@ -55,7 +55,7 @@ class ClientsController extends Controller
         $ok = $client->save();
 
         if ($ok) {
-            return response()->json(["status" => 1, "message" => "client ajoutée", "data" => $client], 201);
+            return response()->json(["status" => 1, "message" => "client ajouté", "data" => $client], 201);
         } else {
             return response()->json(["status" => 0, "message" => "pb lors de l'ajout"], 400);
         }
