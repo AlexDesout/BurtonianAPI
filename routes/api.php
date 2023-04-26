@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FutsController;
 use App\Http\Controllers\BieresController;
-use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\ContenancesController;
 
 /*
@@ -18,6 +18,7 @@ use App\Http\Controllers\ContenancesController;
 |
 */
 
+                // Bières :
 
 // Liste des Bières
 Route::get('/bieres', [App\Http\Controllers\BieresController::class, 'listeBieres']);
@@ -27,3 +28,39 @@ Route::delete('/bieres/{nomBiere}', [App\Http\Controllers\BieresController::clas
 
 // Ajout Bieres
 Route::post('/bieres', [App\Http\Controllers\BieresController::class, 'ajouterBieres']);
+
+
+                // Contenance :
+
+// liste Contenances
+Route::get('/contenances', [App\Http\Controllers\ContenancesController::class, 'listeContenances']);
+
+// Ajout Contenances
+Route::post('/contenances', [App\Http\Controllers\ContenancesController::class, 'ajouterContenances']);
+
+// Suppression Contenances
+Route::delete('/contenances/{litres}', [App\Http\Controllers\ContenancesController::class, 'supprimerContenances']);
+
+
+                // Clients :
+
+// liste Client
+Route::get('/clients', [App\Http\Controllers\ClientsController::class, 'listeClients']);
+
+//  Client par nom
+Route::get('/clients/{nomClient}', [App\Http\Controllers\ClientsController::class, 'uniqueClients']);
+
+// Ajout Clients
+Route::post('/clients', [App\Http\Controllers\ClientsController::class, 'ajouterClients']);
+
+// Suppression Clients
+Route::delete('/clients/{nomClient}', [App\Http\Controllers\ClientsController::class, 'supprimerClients']);
+
+// livraison Clients
+Route::put('/clients', [App\Http\Controllers\ClientsController::class, 'livrerClients']);
+
+
+                // Clients :
+
+// Un fut spécifique
+Route::get('/futs/{idFut}', [App\Http\Controllers\FutsController::class, 'uniqueFut']);

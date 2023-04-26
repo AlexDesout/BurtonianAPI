@@ -29,8 +29,7 @@ class BieresController extends Controller
         if ($ok) {
             return response()->json(["status" => 1, "message" => "Supprimé", "data" => $biere], 200);
         } else {
-            return response()->json(["status" => 0, "message" => "pb lors de
-            supression"], 400);
+            return response()->json(["status" => 0, "message" => "Problème lors de la supression"], 400);
         }
     }
 
