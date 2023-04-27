@@ -60,10 +60,16 @@ Route::delete('/clients/{nomClient}', [App\Http\Controllers\ClientsController::c
 Route::put('/clients', [App\Http\Controllers\ClientsController::class, 'livrerClients']);
 
 
-                // Clients :
+                // Fûts :
+
+// Liste fûts  se trouvant chez un client
+Route::get('/futs/livrer', [App\Http\Controllers\FutsController::class, 'listeClients']);
+
+// Liste fûts pleins ne se trouvant pas chez un client
+Route::get('/futs/pleins', [App\Http\Controllers\FutsController::class, 'listeFutsPleins']);
 
 // Liste fûts vides
-Route::get('/futs/vide', [App\Http\Controllers\FutsController::class, 'listeFutsVides']);
+Route::get('/futs/vides', [App\Http\Controllers\FutsController::class, 'listeFutsVides']);
 
 // Un fût spécifique
 Route::get('/futs/{idFut}', [App\Http\Controllers\FutsController::class, 'uniqueFut']);

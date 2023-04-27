@@ -10,6 +10,61 @@ use Illuminate\Http\Request;
 
 class FutsController extends Controller
 {
+    // Liste fûts se trouvant chez un client
+    public function listeClients(Request $request)
+    {
+        // Vérification des paramètres de la requête
+        if ($request->has('litres') && $request->has('nomClient')) {
+            $futs = Futs::select("*")->where('type', "!=", NULL)->where('nom_client', '=', $request-> nomClient)->where("litres", "=", $request->litres)->get();
+            $ok = $futs;
+        } else {
+            $futs = Futs::select("*")->where('type', '!=', NULL)->where('nom_client', '!=', NULL)->get();
+            $ok = $futs;
+        }
+        if ($request->has('litres') && !$request->has('nomClient')) {
+            $futs = Futs::select("*")->where('type', "!=", NULL)->where('nom_client', '!=', NULL)->where("litres", "=", $request->litres)->get();
+            $ok = $futs;
+        }
+        if (!$request->has('litres') && $request->has('nomClient')) {
+            $futs = Futs::select("*")->where('type', "!=", NULL)->where('nom_client', '=', $request-> nomClient)->get();
+            $ok = $futs;
+        }
+
+        // Affichage du résultat
+        if ($ok) {
+            return response()->json($ok);
+        } else {
+            return response()->json(["status" => 0, "message" => "Pas trouvé"], 400);
+        }
+    }
+
+    // Liste futs pleins ne se trouvant pas chez un client
+    public function listeFutsPleins(Request $request)
+    {
+        // Vérification des paramètres de la requête
+        if ($request->has('litres') && $request->has('type')) {
+            $futs = Futs::select("*")->where('type', "!=", NULL)->where('nom_client', '=', NULL)->where("litres", "=", $request->litres)->where("type", "=", $request->type)->get();
+            $ok = $futs;
+        } else {
+            $futs = Futs::select("*")->where('type', '!=', NULL)->where('nom_client', '=', NULL)->get();
+            $ok = $futs;
+        }
+        if ($request->has('litres') && !$request->has('type')) {
+            $futs = Futs::select("*")->where('type', "!=", NULL)->where('nom_client', '=', NULL)->where("litres", "=", $request->litres)->get();
+            $ok = $futs;
+        }
+        if (!$request->has('litres') && $request->has('type')) {
+            $futs = Futs::select("*")->where('type', "!=", NULL)->where('nom_client', '=', NULL)->where("type", "=", $request->type)->get();
+            $ok = $futs;
+        }
+
+        // Affichage du résultat
+        if ($ok) {
+            return response()->json($ok);
+        } else {
+            return response()->json(["status" => 0, "message" => "Pas trouvé"], 400);
+        }
+    }
     // Liste futs vides
     public function listeFutsVides(Request $request)
     {
@@ -22,6 +77,7 @@ class FutsController extends Controller
             $ok = $futs;
         }
 
+        // Affichage du résultat
         if ($ok) {
             return response()->json($ok);
         } else {
@@ -32,8 +88,11 @@ class FutsController extends Controller
     // Un fut spécifique
     public function uniqueFut($idFut)
     {
+        // Requête SQL
         $fut = Futs::select("*")->where('id_fut', "=", $idFut)->get();
         $ok = $fut;
+
+        // Affichage du résultat
         if ($ok) {
             return response()->json($ok);
         } else {
@@ -57,11 +116,13 @@ class FutsController extends Controller
             return $validator->errors();
         }
 
+        // Ajout dans la BDD
         $fut = new Futs();
-        $fut->id_fut = ($maxId+1);
+        $fut->id_fut = ($maxId + 1);
         $fut->litres = $request->litres;
         $ok = $fut->save();
 
+        // Affichage du résultat
         if ($ok) {
             return response()->json(["status" => 1, "message" => "Fût ajouté", "data" => $fut], 201);
         } else {
@@ -69,10 +130,14 @@ class FutsController extends Controller
         }
     }
 
+    // Supprimer un fut
     public function supprimerFuts($idFut)
     {
+        // Suppression
         $fut = Futs::select('*')->where('id_fut', '=', $idFut);
         $ok = $fut->delete();
+
+        // Affichage du résultat
         if ($ok) {
             return response()->json(["status" => 1, "message" => "Supprimé"], 200);
         } else {
