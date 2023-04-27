@@ -11,9 +11,11 @@ class BieresController extends Controller
     // Liste des bières
     public function listeBieres()
     {
+        // Requête à la BDD
         $bieres = Bieres::get();
         $ok = $bieres;
 
+        // Affichage du résultat
         if ($ok) {
             return response()->json($ok);
         } else {
@@ -24,8 +26,11 @@ class BieresController extends Controller
     // Supprimer une bière
     public function supprimerBieres($nomBiere)
     {
+        // Suppression dans la BDD
         $biere = Bieres::select('*')->where('type', '=', $nomBiere);
         $ok = $biere->delete();
+
+        // Affichage du résultat
         if ($ok) {
             return response()->json(["status" => 1, "message" => "Supprimé", "data" => $biere], 200);
         } else {
@@ -45,10 +50,12 @@ class BieresController extends Controller
             return $validator->errors();
         }
 
+        // Ajout dans la BDD
         $biere = new Bieres();
         $biere->type = $request->type;
         $ok = $biere->save();
 
+        // Affichage du résultat
         if ($ok) {
             return response()->json(["status" => 1, "message" => "Bière ajoutée", "data" => $biere], 201);
         } else {

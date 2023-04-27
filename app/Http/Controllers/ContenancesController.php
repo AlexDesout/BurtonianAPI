@@ -12,9 +12,11 @@ class ContenancesController extends Controller
     // Liste des contenances
     public function listeContenances()
     {
+        // Requête à la BDD
         $contenance = Contenances::get();
         $ok = $contenance;
 
+        // Affichage du résultat
         if ($ok) {
             return response()->json($ok);
         } else {
@@ -34,10 +36,12 @@ class ContenancesController extends Controller
             return $validator->errors();
         }
 
+        // Ajout dans la BDD
         $contenance = new Contenances();
         $contenance->litres = $request->litres;
         $ok = $contenance->save();
 
+        // Affichage du résultat
         if ($ok) {
             return response()->json(["status" => 1, "message" => "Contenance ajoutée", "data" => $contenance], 201);
         } else {
@@ -47,8 +51,12 @@ class ContenancesController extends Controller
 
     // Supprimer une contenance
     public function supprimerContenances($litres){
+
+        // Suppression dans la BDD
         $contenance = Contenances::select('*')->where('litres', '=', $litres);
         $ok = $contenance->delete();
+
+        // Affichage du résultat
         if ($ok) {
             return response()->json(["status" => 1, "message" => "Supprimé"], 200);
         } else {
