@@ -79,3 +79,15 @@ Route::post('/futs', [App\Http\Controllers\FutsController::class, 'ajouterFuts']
 
 // Suppression fûts
 Route::delete('/futs/{idFut}', [App\Http\Controllers\FutsController::class, 'supprimerFuts']);
+
+// Remplir fûts
+Route::put('/futs/remplir', [App\Http\Controllers\FutsController::class, 'remplirFuts']);
+
+// Vider fûts
+Route::put('/futs/vider', [App\Http\Controllers\FutsController::class, 'viderFuts']);
+
+// Livrer fûts
+Route::put('/futs/livrer', [App\Http\Controllers\FutsController::class, 'livrerFuts']);
+
+// Reprendre fûts
+Route::put('/futs/reprendre', [App\Http\Controllers\FutsController::class, 'reprendreFuts']);

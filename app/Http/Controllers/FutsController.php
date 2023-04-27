@@ -15,7 +15,7 @@ class FutsController extends Controller
     {
         // Vérification des paramètres de la requête
         if ($request->has('litres') && $request->has('nomClient')) {
-            $futs = Futs::select("*")->where('type', "!=", NULL)->where('nom_client', '=', $request-> nomClient)->where("litres", "=", $request->litres)->get();
+            $futs = Futs::select("*")->where('type', "!=", NULL)->where('nom_client', '=', $request->nomClient)->where("litres", "=", $request->litres)->get();
             $ok = $futs;
         } else {
             $futs = Futs::select("*")->where('type', '!=', NULL)->where('nom_client', '!=', NULL)->get();
@@ -26,7 +26,7 @@ class FutsController extends Controller
             $ok = $futs;
         }
         if (!$request->has('litres') && $request->has('nomClient')) {
-            $futs = Futs::select("*")->where('type', "!=", NULL)->where('nom_client', '=', $request-> nomClient)->get();
+            $futs = Futs::select("*")->where('type', "!=", NULL)->where('nom_client', '=', $request->nomClient)->get();
             $ok = $futs;
         }
 
@@ -142,6 +142,118 @@ class FutsController extends Controller
             return response()->json(["status" => 1, "message" => "Supprimé"], 200);
         } else {
             return response()->json(["status" => 0, "message" => "Problème lors de la supression"], 400);
+        }
+    }
+
+    // Remplir un fût
+    public function remplirFuts(Request $request)
+    {
+
+        // Vérification de la requête
+        $validator = Validator::make($request->all(), [
+            'id_fut' => ['required', 'numeric'],
+            'type' => ['required', 'string']
+        ]);
+
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
+
+        // Modification dans la BDD
+        if ($fut = Futs::where("id_fut", "=", $request->id_fut)->where("type", "=", NULL)->first()) {
+            $fut->type = $request->type;
+            $ok = $fut->save();
+            return response()->json($fut);
+            if ($ok) {
+                return response()->json(["status" => 1, "message" => "Fût modifié", "data" => $fut], 201);
+            } else {
+                return response()->json(["status" => 0, "message" => "Problème lors de la modification"], 400);
+            }
+        } else {
+            return response()->json(["status" => 0, "message" => "Problème lors de la modification"], 400);
+        }
+    }
+
+    // Remplir un fût
+    public function viderFuts(Request $request)
+    {
+        // Vérification de la requête
+        $validator = Validator::make($request->all(), [
+            'id_fut' => ['required', 'numeric'],
+        ]);
+
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
+
+        // Modification dans la BDD
+        if ($fut = Futs::where("id_fut", "=", $request->id_fut)->where("type", "!=", NULL)->first()) {
+            $fut->type = NULL;
+            $ok = $fut->save();
+            return response()->json($fut);
+            if ($ok) {
+                return response()->json(["status" => 1, "message" => "Fût modifié", "data" => $fut], 201);
+            } else {
+                return response()->json(["status" => 0, "message" => "Problème lors de la modification"], 400);
+            }
+        } else {
+            return response()->json(["status" => 0, "message" => "Problème lors de la modification"], 400);
+        }
+    }
+
+    // Livrer un fût
+    public function livrerFuts(Request $request)
+    {
+        // Vérification de la requête
+        $validator = Validator::make($request->all(), [
+            'id_fut' => ['required', 'numeric'],
+            'nom_client' => ['required', 'string']
+        ]);
+
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
+
+        // Modification dans la BDD
+        if ($fut = Futs::where("id_fut", "=", $request->id_fut)->where("nom_client", "=", NULL)->first()) {
+            $fut->nom_client = $request->nom_client;
+            $ok = $fut->save();
+            return response()->json($fut);
+            if ($ok) {
+                return response()->json(["status" => 1, "message" => "Fût modifié", "data" => $fut], 201);
+            } else {
+                return response()->json(["status" => 0, "message" => "Problème lors de la modification"], 400);
+            }
+        } else {
+            return response()->json(["status" => 0, "message" => "Problème lors de la modification"], 400);
+        }
+    }
+
+    // Reprendre un fût
+    public function reprendreFuts(Request $request)
+    {
+        // Vérification de la requête
+        $validator = Validator::make($request->all(), [
+            'id_fut' => ['required', 'numeric'],
+        ]);
+
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
+
+        // Modification dans la BDD
+        if ($fut = Futs::where("id_fut", "=", $request->id_fut)->where("nom_client", "!=", NULL)->first()) {
+            $fut->nom_client = NULL;
+            $fut->type = NULL;
+            $ok = $fut->save();
+            return response()->json($fut);
+            if ($ok) {
+                return response()->json(["status" => 1, "message" => "Fût modifié", "data" => $fut], 201);
+            } else {
+                return response()->json(["status" => 0, "message" => "Problème lors de la modification"], 400);
+            }
+        } else {
+            return response()->json(["status" => 0, "message" => "Problème lors de la modification"], 400);
         }
     }
 }
