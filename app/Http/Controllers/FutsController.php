@@ -215,7 +215,7 @@ class FutsController extends Controller
         }
 
         // Modification dans la BDD
-        if ($fut = Futs::where("id_fut", "=", $request->id_fut)->where("nom_client", "=", NULL)->first()) {
+        if ($fut = Futs::where("id_fut", "=", $request->id_fut)->where("nom_client", "=", NULL)->where("type", "!=", NULL)->first()) {
             $fut->nom_client = $request->nom_client;
             $ok = $fut->save();
             return response()->json($fut);
