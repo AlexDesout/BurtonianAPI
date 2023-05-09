@@ -105,7 +105,7 @@ class FutsController extends Controller
     {
         // Recherche du plus grand id dans la BDD
         $maxId = Futs::max("id_fut");
-        var_dump($maxId);
+        // var_dump($maxId);
 
         // Validation des données rentrées dans la requête
         $validator = Validator::make($request->all(), [

@@ -23,7 +23,7 @@ class ClientsController extends Controller
         }
     }
 
-    // Un client spécifique clients
+    // Un client spécifique
     public function uniqueClients($nomClient)
     {
         // Requête à la BDD
@@ -53,7 +53,9 @@ class ClientsController extends Controller
         }
 
         // Ajout dans la BDD
+        $maxId = Clients::max("id_client");
         $client = new Clients();
+        $client->id_client = ($maxId +1);
         $client->nom_client = $request->nom_client;
         $client->adresse = $request->adresse;
         $client->numero = $request->numero;

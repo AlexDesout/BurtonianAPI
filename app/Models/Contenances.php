@@ -9,4 +9,6 @@ class Contenances extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    protected $primaryKey = 'litres';
+    public $incrementing = false;
 }

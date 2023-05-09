@@ -9,4 +9,6 @@ class Bieres extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    protected $primaryKey = 'type';
+    public $incrementing = false;
 }
