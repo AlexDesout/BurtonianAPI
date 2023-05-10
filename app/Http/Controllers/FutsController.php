@@ -204,6 +204,7 @@ class FutsController extends Controller
     // Livrer un fût
     public function livrerFuts(Request $request)
     {
+        $date_actuelle = \Carbon\Carbon::now()->toDateTimeString();
         // Vérification de la requête
         $validator = Validator::make($request->all(), [
             'id_fut' => ['required', 'numeric'],
@@ -217,6 +218,7 @@ class FutsController extends Controller
         // Modification dans la BDD
         if ($fut = Futs::where("id_fut", "=", $request->id_fut)->where("nom_client", "=", NULL)->where("type", "!=", NULL)->first()) {
             $fut->nom_client = $request->nom_client;
+            $fut->date_livraison = $date_actuelle;
             $ok = $fut->save();
             return response()->json($fut);
             if ($ok) {
@@ -245,6 +247,7 @@ class FutsController extends Controller
         if ($fut = Futs::where("id_fut", "=", $request->id_fut)->where("nom_client", "!=", NULL)->first()) {
             $fut->nom_client = NULL;
             $fut->type = NULL;
+            $fut->date_livraison = NULL;
             $ok = $fut->save();
             return response()->json($fut);
             if ($ok) {

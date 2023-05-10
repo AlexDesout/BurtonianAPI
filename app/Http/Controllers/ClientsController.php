@@ -24,10 +24,10 @@ class ClientsController extends Controller
     }
 
     // Un client spécifique
-    public function uniqueClients($nomClient)
+    public function uniqueClients($idClient)
     {
         // Requête à la BDD
-        $clients = Clients::select('*')->where('nom_client', '=', $nomClient)->get();
+        $clients = Clients::select('*')->where('id_client', '=', $idClient)->get();
         $ok = $clients;
 
         // Affichage du résultat
@@ -70,10 +70,10 @@ class ClientsController extends Controller
     }
 
     // Supprimer un client
-    public function supprimerClients($nomClient)
+    public function supprimerClients($idClient)
     {
         // Suppression d'un élement à partir de l'id
-        $client = Clients::select('*')->where('nom_client', '=', $nomClient);
+        $client = Clients::select('*')->where('id_client', '=', $idClient);
         $ok = $client->delete();
 
         // Affichage du résultat
@@ -91,7 +91,7 @@ class ClientsController extends Controller
         $date_actuelle = \Carbon\Carbon::now()->toDateTimeString();
         
         // Modification du client dans la BDD
-        if ($client = Clients::where("nom_client", "=", $request -> nom_client)->first()) {
+        if ($client = Clients::where("id_client", "=", $request -> id_client)->first()) {
             $client -> date_livraison = $date_actuelle;
             $ok = $client->save();
             return response()->json($client);

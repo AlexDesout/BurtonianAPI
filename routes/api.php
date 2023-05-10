@@ -54,7 +54,7 @@ Route::get('/clients/{nomClient}', [App\Http\Controllers\ClientsController::clas
 Route::post('/clients', [App\Http\Controllers\ClientsController::class, 'ajouterClients']);
 
 // Suppression Clients
-Route::delete('/clients/{nomClient}', [App\Http\Controllers\ClientsController::class, 'supprimerClients']);
+Route::delete('/clients/{idClient}', [App\Http\Controllers\ClientsController::class, 'supprimerClients']);
 
 // livraison Clients
 Route::put('/clients', [App\Http\Controllers\ClientsController::class, 'livrerClients']);
