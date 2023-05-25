@@ -14,21 +14,44 @@ class FutsController extends Controller
     public function listeClients(Request $request)
     {
         // Vérification des paramètres de la requête
-        if ($request->has('litres') && $request->has('nomClient')) {
-            $futs = Futs::select("*")->where('type', "!=", NULL)->where('nom_client', '=', $request->nomClient)->where("litres", "=", $request->litres)->get();
+
+        // Possède contenance et idClient
+        if ($request->has('litres') && $request->has('idClient')) {
+            $futs = Futs::select("*")->where('type', "!=", NULL)->where('id_client', '=', $request->idClient)->where("litres", "=", $request->litres)->get();
             $ok = $futs;
-        } else {
-            $futs = Futs::select("*")->where('type', '!=', NULL)->where('nom_client', '!=', NULL)->get();
+        } 
+        
+        // Possède type et idClient
+        if ($request->has('type') && $request->has('idClient')) {
+            $futs = Futs::select("*")->where('id_client', '=', $request->idClient)->where("type", "=", $request->type)->get();
+            $ok = $futs;
+        } 
+
+        // Possède seulement l'idClient
+        if (!$request->has('type') && $request->has('idClient') && !$request->has('litres')) {
+            $futs = Futs::select("*")->where('type', '!=', NULL)->where('id_client', '=', $request->idClient)->get();
             $ok = $futs;
         }
-        if ($request->has('litres') && !$request->has('nomClient')) {
-            $futs = Futs::select("*")->where('type', "!=", NULL)->where('nom_client', '!=', NULL)->where("litres", "=", $request->litres)->get();
+
+        // Possède aucune propriété
+        if (!$request->has('type') && !$request->has('idClient') && !$request->has('litres')) {
+            $futs = Futs::select("*")->where('type', '!=', NULL)->where('id_client', '!=', NULL)->get();
             $ok = $futs;
         }
-        if (!$request->has('litres') && $request->has('nomClient')) {
-            $futs = Futs::select("*")->where('type', "!=", NULL)->where('nom_client', '=', $request->nomClient)->get();
+
+        // Possède seulement le type
+        if ($request->has('type') && !$request->has('idClient') && !$request->has('litres')) {
+            $futs = Futs::select("*")->where('type', '=', $request->type)->where('id_client', '!=', NULL)->get();
             $ok = $futs;
         }
+
+        // Possède seulement la contenance
+        if ($request->has('litres') && !$request->has('idClient') && !$request->has('type')) {
+            $futs = Futs::select("*")->where('litres', '=', $request->litres)->where('id_client', '!=', NULL)->where('type', '!=', NULL)->get();
+            $ok = $futs;
+        }
+        
+        
 
         // Affichage du résultat
         if ($ok) {
@@ -43,18 +66,18 @@ class FutsController extends Controller
     {
         // Vérification des paramètres de la requête
         if ($request->has('litres') && $request->has('type')) {
-            $futs = Futs::select("*")->where('type', "!=", NULL)->where('nom_client', '=', NULL)->where("litres", "=", $request->litres)->where("type", "=", $request->type)->get();
+            $futs = Futs::select("*")->where('type', "!=", NULL)->where('id_client', '=', NULL)->where("litres", "=", $request->litres)->where("type", "=", $request->type)->get();
             $ok = $futs;
         } else {
-            $futs = Futs::select("*")->where('type', '!=', NULL)->where('nom_client', '=', NULL)->get();
+            $futs = Futs::select("*")->where('type', '!=', NULL)->where('id_client', '=', NULL)->get();
             $ok = $futs;
         }
         if ($request->has('litres') && !$request->has('type')) {
-            $futs = Futs::select("*")->where('type', "!=", NULL)->where('nom_client', '=', NULL)->where("litres", "=", $request->litres)->get();
+            $futs = Futs::select("*")->where('type', "!=", NULL)->where('id_client', '=', NULL)->where("litres", "=", $request->litres)->get();
             $ok = $futs;
         }
         if (!$request->has('litres') && $request->has('type')) {
-            $futs = Futs::select("*")->where('type', "!=", NULL)->where('nom_client', '=', NULL)->where("type", "=", $request->type)->get();
+            $futs = Futs::select("*")->where('type', "!=", NULL)->where('id_client', '=', NULL)->where("type", "=", $request->type)->get();
             $ok = $futs;
         }
 
@@ -208,7 +231,7 @@ class FutsController extends Controller
         // Vérification de la requête
         $validator = Validator::make($request->all(), [
             'id_fut' => ['required', 'numeric'],
-            'nom_client' => ['required', 'string']
+            'id_client' => ['required', 'numeric']
         ]);
 
         if ($validator->fails()) {
@@ -216,8 +239,8 @@ class FutsController extends Controller
         }
 
         // Modification dans la BDD
-        if ($fut = Futs::where("id_fut", "=", $request->id_fut)->where("nom_client", "=", NULL)->where("type", "!=", NULL)->first()) {
-            $fut->nom_client = $request->nom_client;
+        if ($fut = Futs::where("id_fut", "=", $request->id_fut)->where("id_client", "=", NULL)->where("type", "!=", NULL)->first()) {
+            $fut->id_client = $request->id_client;
             $fut->date_livraison = $date_actuelle;
             $ok = $fut->save();
             return response()->json($fut);
@@ -244,8 +267,8 @@ class FutsController extends Controller
         }
 
         // Modification dans la BDD
-        if ($fut = Futs::where("id_fut", "=", $request->id_fut)->where("nom_client", "!=", NULL)->first()) {
-            $fut->nom_client = NULL;
+        if ($fut = Futs::where("id_fut", "=", $request->id_fut)->where("id_client", "!=", NULL)->first()) {
+            $fut->id_client = NULL;
             $fut->type = NULL;
             $fut->date_livraison = NULL;
             $ok = $fut->save();

@@ -24,10 +24,10 @@ use App\Http\Controllers\ContenancesController;
 Route::get('/bieres', [App\Http\Controllers\BieresController::class, 'listeBieres']);
 
 // Suppression Bieres
-Route::delete('/bieres/{nomBiere}', [App\Http\Controllers\BieresController::class, 'supprimerBieres']);
+Route::delete('/bieres/{nomBiere}', [App\Http\Controllers\BieresController::class, 'supprimerBieres'])->middleware('auth.basic');
 
 // Ajout Bieres
-Route::post('/bieres', [App\Http\Controllers\BieresController::class, 'ajouterBieres']);
+Route::post('/bieres', [App\Http\Controllers\BieresController::class, 'ajouterBieres'])->middleware('auth.basic');
 
 
                 // Contenance :
@@ -36,10 +36,10 @@ Route::post('/bieres', [App\Http\Controllers\BieresController::class, 'ajouterBi
 Route::get('/contenances', [App\Http\Controllers\ContenancesController::class, 'listeContenances']);
 
 // Ajout Contenances
-Route::post('/contenances', [App\Http\Controllers\ContenancesController::class, 'ajouterContenances']);
+Route::post('/contenances', [App\Http\Controllers\ContenancesController::class, 'ajouterContenances'])->middleware('auth.basic');
 
 // Suppression Contenances
-Route::delete('/contenances/{litres}', [App\Http\Controllers\ContenancesController::class, 'supprimerContenances']);
+Route::delete('/contenances/{litres}', [App\Http\Controllers\ContenancesController::class, 'supprimerContenances'])->middleware('auth.basic');
 
 
                 // Clients :
@@ -48,16 +48,16 @@ Route::delete('/contenances/{litres}', [App\Http\Controllers\ContenancesControll
 Route::get('/clients', [App\Http\Controllers\ClientsController::class, 'listeClients']);
 
 //  Client par nom
-Route::get('/clients/{nomClient}', [App\Http\Controllers\ClientsController::class, 'uniqueClients']);
+Route::get('/clients/{idClient}', [App\Http\Controllers\ClientsController::class, 'uniqueClients']);
 
 // Ajout Clients
-Route::post('/clients', [App\Http\Controllers\ClientsController::class, 'ajouterClients']);
+Route::post('/clients', [App\Http\Controllers\ClientsController::class, 'ajouterClients'])->middleware('auth.basic');
 
 // Suppression Clients
-Route::delete('/clients/{idClient}', [App\Http\Controllers\ClientsController::class, 'supprimerClients']);
+Route::delete('/clients/{idClient}', [App\Http\Controllers\ClientsController::class, 'supprimerClients'])->middleware('auth.basic');
 
 // livraison Clients
-Route::put('/clients', [App\Http\Controllers\ClientsController::class, 'livrerClients']);
+Route::put('/clients/livrer', [App\Http\Controllers\ClientsController::class, 'livrerClients'])->middleware('auth.basic');
 
 
                 // Fûts :
@@ -75,19 +75,19 @@ Route::get('/futs/vides', [App\Http\Controllers\FutsController::class, 'listeFut
 Route::get('/futs/{idFut}', [App\Http\Controllers\FutsController::class, 'uniqueFut']);
 
 // Ajout fûts
-Route::post('/futs', [App\Http\Controllers\FutsController::class, 'ajouterFuts']);
+Route::post('/futs', [App\Http\Controllers\FutsController::class, 'ajouterFuts'])->middleware('auth.basic');
 
 // Suppression fûts
-Route::delete('/futs/{idFut}', [App\Http\Controllers\FutsController::class, 'supprimerFuts']);
+Route::delete('/futs/{idFut}', [App\Http\Controllers\FutsController::class, 'supprimerFuts'])->middleware('auth.basic');
 
 // Remplir fûts
-Route::put('/futs/remplir', [App\Http\Controllers\FutsController::class, 'remplirFuts']);
+Route::put('/futs/remplir', [App\Http\Controllers\FutsController::class, 'remplirFuts'])->middleware('auth.basic');
 
 // Vider fûts
-Route::put('/futs/vider', [App\Http\Controllers\FutsController::class, 'viderFuts']);
+Route::put('/futs/vider', [App\Http\Controllers\FutsController::class, 'viderFuts'])->middleware('auth.basic');
 
 // Livrer fûts
-Route::put('/futs/livrer', [App\Http\Controllers\FutsController::class, 'livrerFuts']);
+Route::put('/futs/livrer', [App\Http\Controllers\FutsController::class, 'livrerFuts'])->middleware('auth.basic');
 
 // Reprendre fûts
-Route::put('/futs/reprendre', [App\Http\Controllers\FutsController::class, 'reprendreFuts']);
+Route::put('/futs/reprendre', [App\Http\Controllers\FutsController::class, 'reprendreFuts'])->middleware('auth.basic');

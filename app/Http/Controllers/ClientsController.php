@@ -43,7 +43,7 @@ class ClientsController extends Controller
     {
         // Validation des données rentrées dans la requête
         $validator = Validator::make($request->all(), [
-            'nom_client' => ['required', 'string', 'unique:clients,nom_client'],
+            'nom_client' => ['required', 'string'],
             'adresse' => ['required', 'string'],
             'numero' => ['required', 'numeric']
         ]);
