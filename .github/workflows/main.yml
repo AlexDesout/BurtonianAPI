@@ -21,7 +21,7 @@ jobs:
         uses: milanmk/actions-file-deployer@master
         with:
          remote-protocol: sftp
-         remote-host: ftp.cluster028.hosting.ovh.net
-         remote-user: burtoniann
+         remote-host: ${{ secrets.HOST }}
+         remote-user: ${{ secrets.USER }}
          remote-password: ${{ secrets.MDP }}
          remote-path: /home/burtoniann/www
