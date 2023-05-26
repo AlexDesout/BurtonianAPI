@@ -23,5 +23,5 @@ jobs:
          remote-protocol: sftp
          remote-host: ftp.cluster028.hosting.ovh.net
          remote-user: burtoniann
-         remote-password: Pb70e3c7
+         remote-password: ${{ secrets.MDP }}
          remote-path: /home/burtoniann/www
