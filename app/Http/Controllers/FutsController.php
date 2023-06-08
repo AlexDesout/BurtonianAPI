@@ -26,6 +26,11 @@ class FutsController extends Controller
             $futs = Futs::select("*")->where('id_client', '=', $request->idClient)->where("type", "=", $request->type)->get();
             $ok = $futs;
         } 
+        // Possède tout
+        if ($request->has('type') && $request->has('idClient') && $request->has('litres')) {
+            $futs = Futs::select("*")->where('id_client', '=', $request->idClient)->where("type", "=", $request->type)->where('litres', '=', $request->litres)->get();
+            $ok = $futs;
+        } 
 
         // Possède seulement l'idClient
         if (!$request->has('type') && $request->has('idClient') && !$request->has('litres')) {
@@ -216,7 +221,7 @@ class FutsController extends Controller
         }
 
         // Modification dans la BDD
-        if ($fut = Futs::where("id_fut", "=", $request->id_fut)->where("type", "!=", NULL)->first()) {
+        if ($fut = Futs::where("id_fut", "=", $request->id_fut)->where("type", "!=", NULL)->where("id_client", "=", NULL)->first()) {
             $fut->type = NULL;
             $ok = $fut->save();
             return response()->json($fut);

@@ -45,7 +45,7 @@ class ClientsController extends Controller
         $validator = Validator::make($request->all(), [
             'nom_client' => ['required', 'string'],
             'adresse' => ['required', 'string'],
-            'numero' => ['required', 'numeric']
+            'numero' => ['numeric']
         ]);
 
         if ($validator->fails()) {
