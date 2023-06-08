@@ -50,6 +50,12 @@ class FutsController extends Controller
             $futs = Futs::select("*")->where('litres', '=', $request->litres)->where('id_client', '!=', NULL)->where('type', '!=', NULL)->get();
             $ok = $futs;
         }
+
+        // Possède la contenance et le type sans le client
+        if ($request->has('litres') && !$request->has('idClient') && $request->has('type')) {
+            $futs = Futs::select("*")->where('litres', '=', $request->litres)->where('id_client', '!=', NULL)->where('type', '=', $request->type)->get();
+            $ok = $futs;
+        }
         
         
 
