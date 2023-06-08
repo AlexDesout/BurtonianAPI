@@ -24,4 +24,4 @@ jobs:
          remote-host: ${{ secrets.HOST }}
          remote-user: ${{ secrets.USER }}
          remote-password: ${{ secrets.MDP }}
-         remote-path: /home/burtoniann/www
+         remote-path: /home/burtoniann/www/api
