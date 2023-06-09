@@ -55,7 +55,7 @@ class ClientsController extends Controller
         // Ajout dans la BDD
         $maxId = Clients::max("id_client");
         $client = new Clients();
-        $client->id_client = ($maxId +1);
+        $client->id_client = ($maxId + 1);
         $client->nom_client = $request->nom_client;
         $client->adresse = $request->adresse;
         $client->numero = $request->numero;
@@ -89,10 +89,10 @@ class ClientsController extends Controller
     {
         // Récupération de la date actuelle
         $date_actuelle = \Carbon\Carbon::now()->toDateTimeString();
-        
+
         // Modification du client dans la BDD
-        if ($client = Clients::where("id_client", "=", $request -> id_client)->first()) {
-            $client -> date_livraison = $date_actuelle;
+        if ($client = Clients::where("id_client", "=", $request->id_client)->first()) {
+            $client->date_livraison = $date_actuelle;
             $ok = $client->save();
             return response()->json($client);
 
@@ -104,6 +104,36 @@ class ClientsController extends Controller
             }
         } else {
             return response()->json(["status" => 0, "message" => "Problème lors de la modification"], 400);
+        }
+    }
+
+    // Modifier un client
+    public function modifierClients(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nom_client' => ['required', 'string'],
+            'adresse' => ['required', 'string'],
+        ]);
+
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
+
+        // Ajout dans la BDD
+        if ($client = Clients::where("id_client", "=", $request->id_client)->first()) {
+            $client->nom_client = $request->nom_client;
+            $client->adresse = $request->adresse;
+            $ok = $client->save();
+            return response()->json($client);
+
+            // Affichage du résultat 
+            if ($ok) {
+                return response()->json(["status" => 1, "message" => "client ajouté", "data" => $client], 201);
+            } else {
+                return response()->json(["status" => 0, "message" => "pb lors de l'ajout"], 400);
+            }
+        }else{
+            return response()->json(["status" => 0, "message" => "Problème lors de la modification"], 400); 
         }
     }
 }

@@ -56,8 +56,13 @@ Route::post('/clients', [App\Http\Controllers\ClientsController::class, 'ajouter
 // Suppression Clients
 Route::delete('/clients/{idClient}', [App\Http\Controllers\ClientsController::class, 'supprimerClients'])->middleware('auth.basic');
 
-// livraison Clients
+// Livraison Clients
 Route::put('/clients/livrer', [App\Http\Controllers\ClientsController::class, 'livrerClients'])->middleware('auth.basic');
+
+// Modifier Client
+Route::put('/clients', [App\Http\Controllers\ClientsController::class, 'modifierClients'])->middleware('auth.basic');
+
+
 
 
                 // Fûts :
