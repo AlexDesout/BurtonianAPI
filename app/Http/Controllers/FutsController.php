@@ -99,6 +99,7 @@ class FutsController extends Controller
             return response()->json(["status" => 0, "message" => "Pas trouvé"], 400);
         }
     }
+    
     // Liste futs vides
     public function listeFutsVides(Request $request)
     {
@@ -139,6 +140,7 @@ class FutsController extends Controller
     {
         // Recherche du plus grand id dans la BDD
         $maxId = Futs::max("id_fut");
+        
         // var_dump($maxId);
 
         // Validation des données rentrées dans la requête

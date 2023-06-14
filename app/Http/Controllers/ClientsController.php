@@ -23,6 +23,32 @@ class ClientsController extends Controller
         }
     }
 
+    // Liste clients proches
+    public function procheClients($latitude, $longitude)
+    {
+        // Coordonnées de référence
+        $refLatitude = floatval($latitude); // Convertir en float si nécessaire
+        $refLongitude = floatval($longitude); // Convertir en float si nécessaire
+
+        // Calcul de la distance maximale (rayon) en degrés
+        $rayon = 0.01; // Exemple de rayon de 0.01 degré (environ 1.1 km)
+
+        // Requête à la BDD en utilisant les coordonnées et le rayon
+        $clients = Clients::select('*')
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->whereBetween('latitude', [$refLatitude - $rayon, $refLatitude + $rayon])
+            ->whereBetween('longitude', [$refLongitude - $rayon, $refLongitude + $rayon])
+            ->get();
+
+        // Affichage du résultat de la requête
+        if ($clients->isNotEmpty()) {
+            return response()->json($clients);
+        } else {
+            return response()->json(["status" => 0, "message" => "Aucun client trouvé dans la zone"], 400);
+        }
+    }
+
     // Un client spécifique
     public function uniqueClients($idClient)
     {
@@ -45,6 +71,16 @@ class ClientsController extends Controller
         $validator = Validator::make($request->all(), [
             'nom_client' => ['required', 'string'],
             'adresse' => ['required', 'string'],
+            'latitude' => ['required', 'numeric', function ($attribute, $value, $fail) {
+                if (!is_float($value)) {
+                    $fail('Le champ latitude doit être un nombre décimal.');
+                }
+            }],
+            'longitude' => ['required', 'numeric', function ($attribute, $value, $fail) {
+                if (!is_float($value)) {
+                    $fail('Le champ longitude doit être un nombre décimal.');
+                }
+            }],
             'numero' => ['numeric']
         ]);
 
@@ -113,6 +149,17 @@ class ClientsController extends Controller
         $validator = Validator::make($request->all(), [
             'nom_client' => ['required', 'string'],
             'adresse' => ['required', 'string'],
+            'latitude' => ['numeric', function ($attribute, $value, $fail) {
+                if (!is_float($value)) {
+                    $fail('Le champ latitude doit être un nombre décimal.');
+                }
+            }],
+            'longitude' => ['numeric', function ($attribute, $value, $fail) {
+                if (!is_float($value)) {
+                    $fail('Le champ longitude doit être un nombre décimal.');
+                }
+            }],
+            'numero' => ['numeric']
         ]);
 
         if ($validator->fails()) {
@@ -123,6 +170,8 @@ class ClientsController extends Controller
         if ($client = Clients::where("id_client", "=", $request->id_client)->first()) {
             $client->nom_client = $request->nom_client;
             $client->adresse = $request->adresse;
+            $client->latitude = $request->latitude;
+            $client->longitude = $request->longitude;
             $ok = $client->save();
             return response()->json($client);
 
@@ -132,8 +181,8 @@ class ClientsController extends Controller
             } else {
                 return response()->json(["status" => 0, "message" => "pb lors de l'ajout"], 400);
             }
-        }else{
-            return response()->json(["status" => 0, "message" => "Problème lors de la modification"], 400); 
+        } else {
+            return response()->json(["status" => 0, "message" => "Problème lors de la modification"], 400);
         }
     }
 }

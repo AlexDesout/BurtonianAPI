@@ -50,6 +50,9 @@ Route::get('/clients', [App\Http\Controllers\ClientsController::class, 'listeCli
 //  Client par nom
 Route::get('/clients/{idClient}', [App\Http\Controllers\ClientsController::class, 'uniqueClients']);
 
+//  Clients les plus proche
+Route::get('/clients/position/{latitude}/{longitude}', [App\Http\Controllers\ClientsController::class, 'procheClients']);
+
 // Ajout Clients
 Route::post('/clients', [App\Http\Controllers\ClientsController::class, 'ajouterClients'])->middleware('auth.basic');
 
